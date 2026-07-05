@@ -1,0 +1,224 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum FollowStatus {
+  PENDING
+  ACCEPTED
+}
+
+enum ProjectStatus {
+  DRAFT
+  FINALIZED
+
+  @@map("DayStatus")
+}
+
+// DAY = the default "My Day" vlog, one per calendar date, resets daily.
+// TOPIC = a named project ("Arrays") that accumulates clips across days
+// until it's posted.
+enum ProjectKind {
+  DAY
+  TOPIC
+}
+
+enum ClipSource {
+  CAMERA
+  SCREEN
+}
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  image          String?
+  emailVerified  DateTime?
+  createdAt      DateTime  @default(now())
+  accounts       Account[]
+  sessions       Session[]
+  projects       Project[]
+  clips          Clip[]
+  films          Film[]
+  following      Follow[]  @relation("follower")
+  followers      Follow[]  @relation("followee")
+  sharesReceived Share[]
+  tasks          Task[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Follow {
+  followerId String
+  followeeId String
+  status     FollowStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
+  follower   User         @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followee   User         @relation("followee", fields: [followeeId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followeeId])
+}
+
+model Project {
+  id        String        @id @default(cuid())
+  userId    String
+  title     String        @default("My Day")
+  kind      ProjectKind   @default(DAY)
+  // Set only for kind=DAY (one My Day per calendar date). Topics span days.
+  date      DateTime?     @db.Date
+  status    ProjectStatus @default(DRAFT)
+  timeline  Json          @default("[]")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clips     Clip[]
+  film      Film?
+
+  // NULLs compare distinct, so this only constrains kind=DAY rows (topics
+  // have no date) — one My Day per user per calendar date.
+  @@unique([userId, date])
+  @@map("Day")
+}
+
+model Clip {
+  id          String     @id @default(cuid())
+  projectId   String     @map("dayId")
+  userId      String
+  orderIndex  Int
+  durationSec Float
+  sizeBytes   Int
+  storagePath String
+  mimeType    String
+  source      ClipSource @default(CAMERA)
+  createdAt   DateTime   @default(now())
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Film {
+  id          String   @id @default(cuid())
+  projectId   String   @unique @map("dayId")
+  userId      String
+  title       String   @default("My Day")
+  // The calendar date this film was posted — one post per user per day.
+  date        DateTime @db.Date
+  durationSec Float
+  sizeBytes   Int
+  storagePath String
+  thumbPath   String?
+  createdAt   DateTime @default(now())
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares      Share[]
+
+  @@unique([userId, date])
+}
+
+model Share {
+  filmId      String
+  recipientId String
+  createdAt   DateTime @default(now())
+  film        Film     @relation(fields: [filmId], references: [id], onDelete: Cascade)
+  recipient   User     @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@id([filmId, recipientId])
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// An incomplete task never rolls over or disappears — it simply stays in
+// the open list until done, however old. No "planned date" field needed.
+model Task {
+  id          String          @id @default(cuid())
+  userId      String
+  title       String
+  description String?
+  priority    Priority        @default(MEDIUM)
+  deadline    DateTime?       @db.Date
+  completed   Boolean         @default(false)
+  completedAt DateTime?
+  orderIndex  Int             @default(0)
+  notes       String?
+  studyLayout Json?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subtasks    Subtask[]
+  resources   StudyResource[]
+}
+
+enum ResourceType {
+  YOUTUBE
+  LINK
+}
+
+// A task's study space can hold several resources; a tab strip switches
+// which one is active. YOUTUBE resources are always embeddable via the
+// official IFrame Player API; LINK resources embed live only when the
+// target's own response headers allow framing (checked once, on add).
+model StudyResource {
+  id           String       @id @default(cuid())
+  taskId       String
+  type         ResourceType
+  url          String
+  videoId      String?
+  title        String?
+  thumbnailUrl String?
+  embeddable   Boolean      @default(false)
+  orderIndex   Int          @default(0)
+  createdAt    DateTime     @default(now())
+  task         Task         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+// A task with subtasks can only complete by finishing all of them — see
+// PATCH /api/subtasks/[id], which auto-completes/reopens the parent.
+model Subtask {
+  id          String    @id @default(cuid())
+  taskId      String
+  title       String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  orderIndex  Int       @default(0)
+  createdAt   DateTime  @default(now())
+  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}

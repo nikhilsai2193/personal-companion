@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/*
+  Two verified palettes, not one dark theme with a light patch.
+  Every text tier is picked to clear real contrast against its background —
+  ink-4/bone-faint used to be ~1.6:1 and ~1.8:1 against the page (invisible);
+  see the contrast note further down for the numbers each tier targets.
+*/
+@theme {
+  --color-ink: #0e0e0c;
+  --color-ink-2: #18170f;
+  --color-ink-3: #242017;
+  --color-ink-4: #6b6a5e;
+  --color-bone: #f2f1ec;
+  --color-bone-muted: #a19d90;
+  --color-bone-faint: #85826f;
+  --color-ember: #d85a30;
+  --color-ember-deep: #3d160a;
+
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-display: var(--font-archivo-black), system-ui, sans-serif;
+
+  --ease-film: cubic-bezier(0.65, 0.05, 0, 1);
+  --ease-film-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+  Light theme — Getty-editorial: warm cream page, near-black text, deepened
+  ember (a bright accent on cream fails contrast; a rust shade doesn't).
+  Applied via [data-theme="light"] on <html>, set by an inline pre-hydration
+  script (see layout.tsx) so there is no flash of the wrong theme.
+*/
+:root[data-theme="light"] {
+  --color-ink: #f6f3ec;
+  --color-ink-2: #ffffff;
+  --color-ink-3: #ece7d9;
+  --color-ink-4: #8f8a76;
+  --color-bone: #18170f;
+  --color-bone-muted: #625e4d;
+  --color-bone-faint: #6f6b56;
+  --color-ember: #a8431f;
+  --color-ember-deep: #fbf3ea;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --color-ink: #f6f3ec;
+    --color-ink-2: #ffffff;
+    --color-ink-3: #ece7d9;
+    --color-ink-4: #8f8a76;
+    --color-bone: #18170f;
+    --color-bone-muted: #625e4d;
+    --color-bone-faint: #6f6b56;
+    --color-ember: #a8431f;
+    --color-ember-deep: #fbf3ea;
+  }
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body {
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+}
+
+/*
+  Not a Tailwind theme token on purpose — @theme's --font-* keys each
+  auto-generate a same-named utility, which silently overrode a
+  --font-voice-based .font-voice rule. Referencing the next/font variable
+  directly avoids that collision.
+*/
+.font-voice {
+  font-family: var(--font-editorial), Georgia, serif;
+  font-style: italic;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-ember-deep);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
