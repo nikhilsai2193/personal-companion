@@ -1,5 +1,5 @@
-import Friends from "@/components/friends/Friends";
+import ThreadsList from "@/components/friends/ThreadsList";
 
 export default function FriendsPage() {
-  return <Friends />;
+  return <ThreadsList />;
 }

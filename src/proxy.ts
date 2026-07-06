@@ -24,6 +24,7 @@ const PROTECTED_API = [
   "/api/subtasks",
   "/api/resources",
   "/api/youtube-search",
+  "/api/threads",
 ];
 
 export const proxy = auth((req) => {

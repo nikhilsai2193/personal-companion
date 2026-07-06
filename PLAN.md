@@ -137,6 +137,18 @@ Key decisions encoded here:
   resumes — confirmed via the player's own broadcast state, not just our
   command. Resizable split pane reuses the exact pointer-drag pattern from
   the editor's `TrimBar`. No new paid account required.
+- **M11 — Friends: requests page + per-friend threads.** ✅ *(done 2026-07-06)*
+  Instagram-style split of the old 377-line combined page. `/friends` is now
+  a threads list (one row per accepted connection, sorted by latest share
+  activity); `/friends/requests` holds all decision-making (accept/decline,
+  cancel, search); `/friends/[userId]` is a chat-styled feed of films sent
+  between the two of you (video-only — no text messaging, confirmed scope),
+  sender vs. recipient visually distinguished, with an in-thread "send a
+  film" picker. No new relationship model — a thread is just a query over
+  the existing `Follow`/`Share` tables. Expand-to-player reuses the same
+  `layoutId` shared-element technique as the Archive/Study Space (fourth
+  reuse of that one motion idiom). Ember badge on the friends nav item for
+  pending incoming requests. Old monolithic `Friends.tsx` deleted outright.
 
 Each milestone is independently testable. Local dev never requires Supabase.
 

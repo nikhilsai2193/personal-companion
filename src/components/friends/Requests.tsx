@@ -1,39 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import FadeUp from "@/components/motion/FadeUp";
 import type { PublicUser } from "@/lib/social";
 
 type SearchResult = PublicUser & { status: string };
-type SharedFilm = {
-  id: string;
-  title: string;
-  date: string;
-  durationSec: number;
-  owner: PublicUser;
-  url: string;
-  thumbUrl: string | null;
-};
 type Lists = {
   incoming: PublicUser[];
   outgoing: PublicUser[];
   followers: PublicUser[];
   following: PublicUser[];
 };
-
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-function fmt(sec: number) {
-  const s = Math.max(0, sec);
-  return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
-}
-
-function dayLabel(date: string) {
-  return new Date(`${date.slice(0, 10)}T12:00:00`)
-    .toLocaleDateString("en-US", { month: "short", day: "2-digit" })
-    .toUpperCase();
-}
 
 function Row({
   user,
@@ -59,22 +37,16 @@ function Row({
   );
 }
 
-export default function Friends() {
+export default function Requests() {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<SearchResult[] | null>(null);
   const [lists, setLists] = useState<Lists | null>(null);
-  const [shared, setShared] = useState<SharedFilm[]>([]);
-  const [watching, setWatching] = useState<SharedFilm | null>(null);
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const refresh = useCallback(() => {
     fetch("/api/follows")
       .then((r) => r.json())
       .then(setLists)
-      .catch(() => {});
-    fetch("/api/films/shared")
-      .then((r) => r.json())
-      .then((d) => setShared(d.films ?? []))
       .catch(() => {});
   }, []);
 
@@ -168,10 +140,18 @@ export default function Friends() {
   return (
     <div className="mx-auto w-full max-w-2xl px-6 py-16 md:px-0">
       <FadeUp>
-        <p className="text-eyebrow text-ember">your people</p>
+        <Link
+          href="/friends"
+          className="text-[10px] tracking-[0.12em] text-bone-muted transition-colors duration-300 hover:text-bone"
+        >
+          ← back to friends
+        </Link>
+      </FadeUp>
+      <FadeUp delay={0.06}>
+        <p className="mt-6 text-eyebrow text-ember">manage your people</p>
       </FadeUp>
       <FadeUp delay={0.1}>
-        <h1 className="font-display mt-4 text-5xl md:text-7xl">FRIENDS</h1>
+        <h1 className="font-display mt-4 text-5xl md:text-7xl">REQUESTS</h1>
       </FadeUp>
 
       <FadeUp delay={0.2}>
@@ -285,93 +265,6 @@ export default function Friends() {
           </div>
         </section>
       )}
-
-      <section className="mt-16">
-        <p className="text-eyebrow text-ember">from friends</p>
-        {shared.length === 0 ? (
-          <p className="mt-3 text-xs text-bone-faint">
-            films friends send you will play here
-          </p>
-        ) : (
-          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
-            {shared.map((f) => (
-              <motion.button
-                key={f.id}
-                layoutId={`shared-${f.id}`}
-                onClick={() => setWatching(f)}
-                className="group block overflow-hidden rounded bg-ink-2 text-left"
-              >
-                <div className="aspect-video overflow-hidden">
-                  {f.thumbUrl ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={f.thumbUrl}
-                      alt={`Film from ${f.owner.name ?? f.owner.email}`}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-ink-3" />
-                  )}
-                </div>
-                <div className="px-4 py-3">
-                  <p className="font-display truncate text-lg">
-                    {f.title.toUpperCase()}
-                  </p>
-                  <p className="mt-0.5 truncate text-[10px] tracking-[0.14em] text-bone-muted">
-                    {dayLabel(String(f.date))} — by{" "}
-                    {f.owner.name ?? f.owner.email} — {fmt(f.durationSec)}
-                  </p>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <AnimatePresence>
-        {watching && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setWatching(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-ink/95 px-4 md:px-10"
-          >
-            <motion.div
-              layoutId={`shared-${watching.id}`}
-              transition={{ duration: 0.5, ease: EASE }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl overflow-hidden rounded-lg bg-ink-2"
-            >
-              <video
-                src={watching.url}
-                poster={watching.thumbUrl ?? undefined}
-                controls
-                autoPlay
-                playsInline
-                className="aspect-video w-full object-contain"
-              />
-              <div className="flex items-center justify-between px-5 py-4">
-                <div>
-                  <p className="font-display text-2xl">
-                    {watching.title.toUpperCase()}
-                  </p>
-                  <p className="mt-0.5 text-[10px] tracking-[0.14em] text-bone-muted">
-                    {dayLabel(String(watching.date))} — a film by{" "}
-                    {watching.owner.name ?? watching.owner.email}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setWatching(null)}
-                  className="text-xs tracking-[0.12em] text-bone-muted hover:text-bone"
-                >
-                  close
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
