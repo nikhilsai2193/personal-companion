@@ -395,7 +395,11 @@ export const ModelName = {
   Share: 'Share',
   Task: 'Task',
   StudyResource: 'StudyResource',
-  Subtask: 'Subtask'
+  Subtask: 'Subtask',
+  GoalPlan: 'GoalPlan',
+  GoalEntry: 'GoalEntry',
+  GoalNode: 'GoalNode',
+  GoalCheckpoint: 'GoalCheckpoint'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "follow" | "project" | "clip" | "film" | "share" | "task" | "studyResource" | "subtask"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "follow" | "project" | "clip" | "film" | "share" | "task" | "studyResource" | "subtask" | "goalPlan" | "goalEntry" | "goalNode" | "goalCheckpoint"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1303,6 +1307,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GoalPlan: {
+      payload: Prisma.$GoalPlanPayload<ExtArgs>
+      fields: Prisma.GoalPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GoalPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GoalPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.GoalPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GoalPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>
+        }
+        findMany: {
+          args: Prisma.GoalPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>[]
+        }
+        create: {
+          args: Prisma.GoalPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>
+        }
+        createMany: {
+          args: Prisma.GoalPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GoalPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.GoalPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>
+        }
+        update: {
+          args: Prisma.GoalPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.GoalPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GoalPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GoalPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.GoalPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.GoalPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGoalPlan>
+        }
+        groupBy: {
+          args: Prisma.GoalPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GoalPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalPlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    GoalEntry: {
+      payload: Prisma.$GoalEntryPayload<ExtArgs>
+      fields: Prisma.GoalEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GoalEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GoalEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.GoalEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GoalEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>
+        }
+        findMany: {
+          args: Prisma.GoalEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>[]
+        }
+        create: {
+          args: Prisma.GoalEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>
+        }
+        createMany: {
+          args: Prisma.GoalEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GoalEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.GoalEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>
+        }
+        update: {
+          args: Prisma.GoalEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.GoalEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GoalEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GoalEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.GoalEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.GoalEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGoalEntry>
+        }
+        groupBy: {
+          args: Prisma.GoalEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GoalEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalEntryCountAggregateOutputType> | number
+        }
+      }
+    }
+    GoalNode: {
+      payload: Prisma.$GoalNodePayload<ExtArgs>
+      fields: Prisma.GoalNodeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GoalNodeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GoalNodeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>
+        }
+        findFirst: {
+          args: Prisma.GoalNodeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GoalNodeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>
+        }
+        findMany: {
+          args: Prisma.GoalNodeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>[]
+        }
+        create: {
+          args: Prisma.GoalNodeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>
+        }
+        createMany: {
+          args: Prisma.GoalNodeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GoalNodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>[]
+        }
+        delete: {
+          args: Prisma.GoalNodeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>
+        }
+        update: {
+          args: Prisma.GoalNodeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>
+        }
+        deleteMany: {
+          args: Prisma.GoalNodeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GoalNodeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GoalNodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>[]
+        }
+        upsert: {
+          args: Prisma.GoalNodeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalNodePayload>
+        }
+        aggregate: {
+          args: Prisma.GoalNodeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGoalNode>
+        }
+        groupBy: {
+          args: Prisma.GoalNodeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalNodeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GoalNodeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalNodeCountAggregateOutputType> | number
+        }
+      }
+    }
+    GoalCheckpoint: {
+      payload: Prisma.$GoalCheckpointPayload<ExtArgs>
+      fields: Prisma.GoalCheckpointFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GoalCheckpointFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GoalCheckpointFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>
+        }
+        findFirst: {
+          args: Prisma.GoalCheckpointFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GoalCheckpointFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>
+        }
+        findMany: {
+          args: Prisma.GoalCheckpointFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>[]
+        }
+        create: {
+          args: Prisma.GoalCheckpointCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>
+        }
+        createMany: {
+          args: Prisma.GoalCheckpointCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GoalCheckpointCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>[]
+        }
+        delete: {
+          args: Prisma.GoalCheckpointDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>
+        }
+        update: {
+          args: Prisma.GoalCheckpointUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>
+        }
+        deleteMany: {
+          args: Prisma.GoalCheckpointDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GoalCheckpointUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GoalCheckpointUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>[]
+        }
+        upsert: {
+          args: Prisma.GoalCheckpointUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoalCheckpointPayload>
+        }
+        aggregate: {
+          args: Prisma.GoalCheckpointAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGoalCheckpoint>
+        }
+        groupBy: {
+          args: Prisma.GoalCheckpointGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalCheckpointGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GoalCheckpointCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoalCheckpointCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1469,6 +1769,7 @@ export const TaskScalarFieldEnum = {
   orderIndex: 'orderIndex',
   notes: 'notes',
   studyLayout: 'studyLayout',
+  goalCheckpointId: 'goalCheckpointId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1503,6 +1804,63 @@ export const SubtaskScalarFieldEnum = {
 } as const
 
 export type SubtaskScalarFieldEnum = (typeof SubtaskScalarFieldEnum)[keyof typeof SubtaskScalarFieldEnum]
+
+
+export const GoalPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GoalPlanScalarFieldEnum = (typeof GoalPlanScalarFieldEnum)[keyof typeof GoalPlanScalarFieldEnum]
+
+
+export const GoalEntryScalarFieldEnum = {
+  id: 'id',
+  goalPlanId: 'goalPlanId',
+  rawText: 'rawText',
+  status: 'status',
+  error: 'error',
+  proposedTree: 'proposedTree',
+  createdAt: 'createdAt'
+} as const
+
+export type GoalEntryScalarFieldEnum = (typeof GoalEntryScalarFieldEnum)[keyof typeof GoalEntryScalarFieldEnum]
+
+
+export const GoalNodeScalarFieldEnum = {
+  id: 'id',
+  goalPlanId: 'goalPlanId',
+  parentId: 'parentId',
+  title: 'title',
+  description: 'description',
+  targetDate: 'targetDate',
+  orderIndex: 'orderIndex',
+  choiceGroupId: 'choiceGroupId',
+  obstacle: 'obstacle',
+  obstaclePlan: 'obstaclePlan',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GoalNodeScalarFieldEnum = (typeof GoalNodeScalarFieldEnum)[keyof typeof GoalNodeScalarFieldEnum]
+
+
+export const GoalCheckpointScalarFieldEnum = {
+  id: 'id',
+  nodeId: 'nodeId',
+  title: 'title',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  orderIndex: 'orderIndex',
+  createdAt: 'createdAt'
+} as const
+
+export type GoalCheckpointScalarFieldEnum = (typeof GoalCheckpointScalarFieldEnum)[keyof typeof GoalCheckpointScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1719,6 +2077,20 @@ export type EnumResourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 export type ListEnumResourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResourceType[]'>
     
 
+
+/**
+ * Reference to a field of type 'EntryStatus'
+ */
+export type EnumEntryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntryStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'EntryStatus[]'
+ */
+export type ListEnumEntryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntryStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1841,6 +2213,10 @@ export type GlobalOmitConfig = {
   task?: Prisma.TaskOmit
   studyResource?: Prisma.StudyResourceOmit
   subtask?: Prisma.SubtaskOmit
+  goalPlan?: Prisma.GoalPlanOmit
+  goalEntry?: Prisma.GoalEntryOmit
+  goalNode?: Prisma.GoalNodeOmit
+  goalCheckpoint?: Prisma.GoalCheckpointOmit
 }
 
 /* Types for Logging */

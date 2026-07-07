@@ -62,7 +62,11 @@ export const ModelName = {
   Share: 'Share',
   Task: 'Task',
   StudyResource: 'StudyResource',
-  Subtask: 'Subtask'
+  Subtask: 'Subtask',
+  GoalPlan: 'GoalPlan',
+  GoalEntry: 'GoalEntry',
+  GoalNode: 'GoalNode',
+  GoalCheckpoint: 'GoalCheckpoint'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -208,6 +212,7 @@ export const TaskScalarFieldEnum = {
   orderIndex: 'orderIndex',
   notes: 'notes',
   studyLayout: 'studyLayout',
+  goalCheckpointId: 'goalCheckpointId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -242,6 +247,63 @@ export const SubtaskScalarFieldEnum = {
 } as const
 
 export type SubtaskScalarFieldEnum = (typeof SubtaskScalarFieldEnum)[keyof typeof SubtaskScalarFieldEnum]
+
+
+export const GoalPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GoalPlanScalarFieldEnum = (typeof GoalPlanScalarFieldEnum)[keyof typeof GoalPlanScalarFieldEnum]
+
+
+export const GoalEntryScalarFieldEnum = {
+  id: 'id',
+  goalPlanId: 'goalPlanId',
+  rawText: 'rawText',
+  status: 'status',
+  error: 'error',
+  proposedTree: 'proposedTree',
+  createdAt: 'createdAt'
+} as const
+
+export type GoalEntryScalarFieldEnum = (typeof GoalEntryScalarFieldEnum)[keyof typeof GoalEntryScalarFieldEnum]
+
+
+export const GoalNodeScalarFieldEnum = {
+  id: 'id',
+  goalPlanId: 'goalPlanId',
+  parentId: 'parentId',
+  title: 'title',
+  description: 'description',
+  targetDate: 'targetDate',
+  orderIndex: 'orderIndex',
+  choiceGroupId: 'choiceGroupId',
+  obstacle: 'obstacle',
+  obstaclePlan: 'obstaclePlan',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GoalNodeScalarFieldEnum = (typeof GoalNodeScalarFieldEnum)[keyof typeof GoalNodeScalarFieldEnum]
+
+
+export const GoalCheckpointScalarFieldEnum = {
+  id: 'id',
+  nodeId: 'nodeId',
+  title: 'title',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  orderIndex: 'orderIndex',
+  createdAt: 'createdAt'
+} as const
+
+export type GoalCheckpointScalarFieldEnum = (typeof GoalCheckpointScalarFieldEnum)[keyof typeof GoalCheckpointScalarFieldEnum]
 
 
 export const SortOrder = {

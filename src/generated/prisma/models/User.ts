@@ -199,6 +199,7 @@ export type UserWhereInput = {
   followers?: Prisma.FollowListRelationFilter
   sharesReceived?: Prisma.ShareListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
+  goalPlans?: Prisma.GoalPlanListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -217,6 +218,7 @@ export type UserOrderByWithRelationInput = {
   followers?: Prisma.FollowOrderByRelationAggregateInput
   sharesReceived?: Prisma.ShareOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
+  goalPlans?: Prisma.GoalPlanOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -238,6 +240,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   followers?: Prisma.FollowListRelationFilter
   sharesReceived?: Prisma.ShareListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
+  goalPlans?: Prisma.GoalPlanListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -280,6 +283,7 @@ export type UserCreateInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -298,6 +302,7 @@ export type UserUncheckedCreateInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -316,6 +321,7 @@ export type UserUpdateInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -334,6 +340,7 @@ export type UserUncheckedUpdateInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -537,6 +544,20 @@ export type UserUpdateOneRequiredWithoutTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTasksInput, Prisma.UserUpdateWithoutTasksInput>, Prisma.UserUncheckedUpdateWithoutTasksInput>
 }
 
+export type UserCreateNestedOneWithoutGoalPlansInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGoalPlansInput, Prisma.UserUncheckedCreateWithoutGoalPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGoalPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGoalPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGoalPlansInput, Prisma.UserUncheckedCreateWithoutGoalPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGoalPlansInput
+  upsert?: Prisma.UserUpsertWithoutGoalPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGoalPlansInput, Prisma.UserUpdateWithoutGoalPlansInput>, Prisma.UserUncheckedUpdateWithoutGoalPlansInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   email: string
@@ -552,6 +573,7 @@ export type UserCreateWithoutAccountsInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -569,6 +591,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -602,6 +625,7 @@ export type UserUpdateWithoutAccountsInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -619,6 +643,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -636,6 +661,7 @@ export type UserCreateWithoutSessionsInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -653,6 +679,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -686,6 +713,7 @@ export type UserUpdateWithoutSessionsInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -703,6 +731,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFollowingInput = {
@@ -720,6 +749,7 @@ export type UserCreateWithoutFollowingInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFollowingInput = {
@@ -737,6 +767,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFollowingInput = {
@@ -759,6 +790,7 @@ export type UserCreateWithoutFollowersInput = {
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFollowersInput = {
@@ -776,6 +808,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFollowersInput = {
@@ -809,6 +842,7 @@ export type UserUpdateWithoutFollowingInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -826,6 +860,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFollowersInput = {
@@ -854,6 +889,7 @@ export type UserUpdateWithoutFollowersInput = {
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -871,6 +907,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProjectsInput = {
@@ -888,6 +925,7 @@ export type UserCreateWithoutProjectsInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
@@ -905,6 +943,7 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -938,6 +977,7 @@ export type UserUpdateWithoutProjectsInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -955,6 +995,7 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutClipsInput = {
@@ -972,6 +1013,7 @@ export type UserCreateWithoutClipsInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutClipsInput = {
@@ -989,6 +1031,7 @@ export type UserUncheckedCreateWithoutClipsInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutClipsInput = {
@@ -1022,6 +1065,7 @@ export type UserUpdateWithoutClipsInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClipsInput = {
@@ -1039,6 +1083,7 @@ export type UserUncheckedUpdateWithoutClipsInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFilmsInput = {
@@ -1056,6 +1101,7 @@ export type UserCreateWithoutFilmsInput = {
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFilmsInput = {
@@ -1073,6 +1119,7 @@ export type UserUncheckedCreateWithoutFilmsInput = {
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFilmsInput = {
@@ -1106,6 +1153,7 @@ export type UserUpdateWithoutFilmsInput = {
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFilmsInput = {
@@ -1123,6 +1171,7 @@ export type UserUncheckedUpdateWithoutFilmsInput = {
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSharesReceivedInput = {
@@ -1140,6 +1189,7 @@ export type UserCreateWithoutSharesReceivedInput = {
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSharesReceivedInput = {
@@ -1157,6 +1207,7 @@ export type UserUncheckedCreateWithoutSharesReceivedInput = {
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSharesReceivedInput = {
@@ -1190,6 +1241,7 @@ export type UserUpdateWithoutSharesReceivedInput = {
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharesReceivedInput = {
@@ -1207,6 +1259,7 @@ export type UserUncheckedUpdateWithoutSharesReceivedInput = {
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTasksInput = {
@@ -1224,6 +1277,7 @@ export type UserCreateWithoutTasksInput = {
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
+  goalPlans?: Prisma.GoalPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTasksInput = {
@@ -1241,6 +1295,7 @@ export type UserUncheckedCreateWithoutTasksInput = {
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
   sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
+  goalPlans?: Prisma.GoalPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTasksInput = {
@@ -1274,6 +1329,7 @@ export type UserUpdateWithoutTasksInput = {
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
+  goalPlans?: Prisma.GoalPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksInput = {
@@ -1291,6 +1347,95 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
   sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
+  goalPlans?: Prisma.GoalPlanUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutGoalPlansInput = {
+  id?: string
+  email: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  createdAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutUserInput
+  clips?: Prisma.ClipCreateNestedManyWithoutUserInput
+  films?: Prisma.FilmCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput
+  sharesReceived?: Prisma.ShareCreateNestedManyWithoutRecipientInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutGoalPlansInput = {
+  id?: string
+  email: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: Date | string | null
+  createdAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutUserInput
+  clips?: Prisma.ClipUncheckedCreateNestedManyWithoutUserInput
+  films?: Prisma.FilmUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput
+  sharesReceived?: Prisma.ShareUncheckedCreateNestedManyWithoutRecipientInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutGoalPlansInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGoalPlansInput, Prisma.UserUncheckedCreateWithoutGoalPlansInput>
+}
+
+export type UserUpsertWithoutGoalPlansInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGoalPlansInput, Prisma.UserUncheckedUpdateWithoutGoalPlansInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGoalPlansInput, Prisma.UserUncheckedCreateWithoutGoalPlansInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGoalPlansInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGoalPlansInput, Prisma.UserUncheckedUpdateWithoutGoalPlansInput>
+}
+
+export type UserUpdateWithoutGoalPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutUserNestedInput
+  clips?: Prisma.ClipUpdateManyWithoutUserNestedInput
+  films?: Prisma.FilmUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput
+  sharesReceived?: Prisma.ShareUpdateManyWithoutRecipientNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGoalPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutUserNestedInput
+  clips?: Prisma.ClipUncheckedUpdateManyWithoutUserNestedInput
+  films?: Prisma.FilmUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput
+  sharesReceived?: Prisma.ShareUncheckedUpdateManyWithoutRecipientNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1308,6 +1453,7 @@ export type UserCountOutputType = {
   followers: number
   sharesReceived: number
   tasks: number
+  goalPlans: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1320,6 +1466,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   followers?: boolean | UserCountOutputTypeCountFollowersArgs
   sharesReceived?: boolean | UserCountOutputTypeCountSharesReceivedArgs
   tasks?: boolean | UserCountOutputTypeCountTasksArgs
+  goalPlans?: boolean | UserCountOutputTypeCountGoalPlansArgs
 }
 
 /**
@@ -1395,6 +1542,13 @@ export type UserCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.TaskWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGoalPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GoalPlanWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1412,6 +1566,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   followers?: boolean | Prisma.User$followersArgs<ExtArgs>
   sharesReceived?: boolean | Prisma.User$sharesReceivedArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
+  goalPlans?: boolean | Prisma.User$goalPlansArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1453,6 +1608,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   followers?: boolean | Prisma.User$followersArgs<ExtArgs>
   sharesReceived?: boolean | Prisma.User$sharesReceivedArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
+  goalPlans?: boolean | Prisma.User$goalPlansArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1470,6 +1626,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     followers: Prisma.$FollowPayload<ExtArgs>[]
     sharesReceived: Prisma.$SharePayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
+    goalPlans: Prisma.$GoalPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1881,6 +2038,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   followers<T extends Prisma.User$followersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sharesReceived<T extends Prisma.User$sharesReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sharesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  goalPlans<T extends Prisma.User$goalPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$goalPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoalPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2522,6 +2680,30 @@ export type User$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
+}
+
+/**
+ * User.goalPlans
+ */
+export type User$goalPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GoalPlan
+   */
+  select?: Prisma.GoalPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GoalPlan
+   */
+  omit?: Prisma.GoalPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GoalPlanInclude<ExtArgs> | null
+  where?: Prisma.GoalPlanWhereInput
+  orderBy?: Prisma.GoalPlanOrderByWithRelationInput | Prisma.GoalPlanOrderByWithRelationInput[]
+  cursor?: Prisma.GoalPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GoalPlanScalarFieldEnum | Prisma.GoalPlanScalarFieldEnum[]
 }
 
 /**

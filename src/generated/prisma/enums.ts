@@ -56,3 +56,12 @@ export const ResourceType = {
 } as const
 
 export type ResourceType = (typeof ResourceType)[keyof typeof ResourceType]
+
+
+export const EntryStatus = {
+  PENDING: 'PENDING',
+  PROCESSED: 'PROCESSED',
+  FAILED: 'FAILED'
+} as const
+
+export type EntryStatus = (typeof EntryStatus)[keyof typeof EntryStatus]

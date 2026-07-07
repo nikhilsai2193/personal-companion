@@ -9,6 +9,7 @@ const PROTECTED_PAGES = [
   "/studio",
   "/plan",
   "/study",
+  "/goals",
 ];
 const PROTECTED_API = [
   "/api/clips",
@@ -25,6 +26,9 @@ const PROTECTED_API = [
   "/api/resources",
   "/api/youtube-search",
   "/api/threads",
+  "/api/goals",
+  "/api/goal-nodes",
+  "/api/goal-checkpoints",
 ];
 
 export const proxy = auth((req) => {

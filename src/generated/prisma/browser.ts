@@ -77,3 +77,23 @@ export type StudyResource = Prisma.StudyResourceModel
  * 
  */
 export type Subtask = Prisma.SubtaskModel
+/**
+ * Model GoalPlan
+ * 
+ */
+export type GoalPlan = Prisma.GoalPlanModel
+/**
+ * Model GoalEntry
+ * 
+ */
+export type GoalEntry = Prisma.GoalEntryModel
+/**
+ * Model GoalNode
+ * 
+ */
+export type GoalNode = Prisma.GoalNodeModel
+/**
+ * Model GoalCheckpoint
+ * 
+ */
+export type GoalCheckpoint = Prisma.GoalCheckpointModel

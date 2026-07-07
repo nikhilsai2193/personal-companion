@@ -149,6 +149,85 @@ Key decisions encoded here:
   `layoutId` shared-element technique as the Archive/Study Space (fourth
   reuse of that one motion idiom). Ember badge on the friends nav item for
   pending incoming requests. Old monolithic `Friends.tsx` deleted outright.
+- **M12.1 — Goal Trees: AI pipeline.** ✅ *(done 2026-07-07)* Long-horizon
+  goals as a tree, mapped from the user's own prose. Research-grounded
+  (proximal-goal / implementation-intention / WOOP citations in the plan
+  doc). Model is `gpt-oss-120b` on Groq, not the `llama-3.3-70b-versatile`
+  originally named — near-identical free-tier limits, but `gpt-oss-120b`
+  supports `strict: true` JSON Schema mode (guaranteed-conformant output,
+  vs. best-effort). Key rotation across `GROQ_API_KEY_1..5` with reactive
+  429 failover (`src/lib/groq.ts`). New models: `GoalPlan`, `GoalEntry`,
+  `GoalNode` (self-referential tree, `choiceGroupId` marks either/or
+  siblings, WOOP `obstacle`/`obstaclePlan`), `GoalCheckpoint` (mirrors
+  `Subtask`'s exact auto-complete/reopen rule); `Task.goalCheckpointId` FK
+  laid for the M12.4 daily-plan bridge. `/goals`: spacious prose composer
+  with soft WOOP-shaped ghost-text scaffolding, past entries listed,
+  explicit submit (never auto-fires on keystroke); a simple nested
+  placeholder tree view proves the pipeline before M12.2's real canvas.
+  Verified with two real Groq keys against the user's actual master's-degree
+  scenario end to end — correct root/dependency ordering, concrete
+  implementation-intention-shaped checkpoints, an obstacle/plan inferred
+  only where the text supported it, and a genuine either/or (thesis vs.
+  coursework) correctly grouped as a choice, not a parallel branch.
+  Multi-entry merge (M12.3) intentionally rejected for now with a clear
+  message rather than guessed at.
+- **M12.2 — Goal Trees: the real canvas.** ✅ *(done 2026-07-07)* Replaced
+  M12.1's placeholder list with the actual pan/zoom visualization —
+  `@xyflow/react` for the interactive canvas, `d3-hierarchy` (`stratify` +
+  `tree`) purely for layout math (no D3 DOM manipulation). Choice-group
+  siblings get tighter spacing via a custom `separation()` function, a
+  dashed edge style, and a floating "choose one path" label rendered as its
+  own React Flow node. Cards are fixed-size and non-draggable — position is
+  owned by the layout, not a free-form canvas the user has to tidy.
+  Clicking a card hands off via a shared `layoutId` (the same technique
+  used for Archive/Study Space/Friends) into a full detail overlay, which
+  then does a genuine 3D `rotateY` flip (`preserve-3d`, both faces
+  `backface-visibility: hidden`) to reveal the back — checkpoints
+  (identical auto-complete rule to M9), inline-editable title/description/
+  date/obstacle/plan, add/remove checkpoints. Edges between a node and its
+  parent tint from muted ink toward ember via `color-mix()`, keyed to that
+  subtree's checkpoint-completion fraction — the "never lose the big
+  picture" requirement made literal. Verified live end to end: real
+  extracted tree rendered correctly, dashed choice edges + label confirmed
+  in the DOM, flip observed mid-rotation and settled, checkpoints toggled
+  through the real UI, and the edge to a newly-100%-complete node was
+  confirmed to shift to pure ember — in both themes.
+- **M12.3 — Goal Trees: incremental entries, safely.** ✅ *(done 2026-07-07)*
+  Writing more into an existing plan no longer restarts it — the model now
+  gets the current tree (real ids, current completion state) plus the new
+  prose, and proposes an updated tree via a dedicated merge prompt
+  (`extractMergeTree`, `src/lib/goalExtraction.ts`) that's told to reuse
+  existing ids for anything still true and only drop an id if the new text
+  actually contradicts it. Nothing from that proposal is ever applied
+  directly: `computeDiff()` (`src/lib/goalDiff.ts`) diffs it against the
+  live tree — added/renamed/removed nodes and checkpoints — and the API
+  returns the diff for review rather than writing anything. The one
+  structural guarantee that doesn't depend on the model behaving: a
+  proposed removal is only ever allowed to touch the database if it has no
+  completed checkpoints, or if its id appears in an explicit
+  `confirmedRemovalIds` list the user opted into — checked server-side in
+  `applyMerge()`, not just enforced by the UI. `applyMerge` runs as one
+  topological-upsert pass (updates/inserts, mirroring `persistFirstTree`)
+  followed by deletes, in that order, specifically so a node being kept is
+  always re-parented away *before* any cascade from a sibling's deletion
+  could otherwise take it down too. `MergeReview.tsx` is the review screen:
+  new steps/checkpoints and renames need only a glance, harmless removals
+  are shown as already-applied, and anything with progress at stake gets
+  its own ember-tinted section with a per-item "remove it anyway" checkbox
+  that defaults unchecked. `GoalPlanView` gained an "add more —" action
+  that reopens the composer over an existing tree without losing it.
+  Verified with a real multi-entry scenario against a live test plan: with
+  a completed Linear Algebra node (2/2) and a partially-completed Data
+  Structures node (1/2), an entry claiming Data Structures was waived
+  correctly produced a diff flagging it as a risky removal; confirming with
+  an empty `confirmedRemovalIds` preserved it exactly as it was, and a
+  second attempt with its id explicitly confirmed actually removed it —
+  while Linear Algebra stayed untouched throughout. Re-ran the same
+  progress-at-stake scenario through the actual browser UI (composer →
+  processing overlay → `MergeReview` → confirm without checking the box)
+  and confirmed the completed item survived with its checkbox state intact
+  and a genuinely new checkpoint from that entry was correctly added
+  alongside it. Test plan deleted after verification.
 
 Each milestone is independently testable. Local dev never requires Supabase.
 

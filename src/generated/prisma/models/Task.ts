@@ -45,6 +45,7 @@ export type TaskMinAggregateOutputType = {
   completedAt: Date | null
   orderIndex: number | null
   notes: string | null
+  goalCheckpointId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +61,7 @@ export type TaskMaxAggregateOutputType = {
   completedAt: Date | null
   orderIndex: number | null
   notes: string | null
+  goalCheckpointId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -76,6 +78,7 @@ export type TaskCountAggregateOutputType = {
   orderIndex: number
   notes: number
   studyLayout: number
+  goalCheckpointId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -101,6 +104,7 @@ export type TaskMinAggregateInputType = {
   completedAt?: true
   orderIndex?: true
   notes?: true
+  goalCheckpointId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -116,6 +120,7 @@ export type TaskMaxAggregateInputType = {
   completedAt?: true
   orderIndex?: true
   notes?: true
+  goalCheckpointId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -132,6 +137,7 @@ export type TaskCountAggregateInputType = {
   orderIndex?: true
   notes?: true
   studyLayout?: true
+  goalCheckpointId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -235,6 +241,7 @@ export type TaskGroupByOutputType = {
   orderIndex: number
   notes: string | null
   studyLayout: runtime.JsonValue | null
+  goalCheckpointId: string | null
   createdAt: Date
   updatedAt: Date
   _count: TaskCountAggregateOutputType | null
@@ -274,11 +281,13 @@ export type TaskWhereInput = {
   orderIndex?: Prisma.IntFilter<"Task"> | number
   notes?: Prisma.StringNullableFilter<"Task"> | string | null
   studyLayout?: Prisma.JsonNullableFilter<"Task">
+  goalCheckpointId?: Prisma.StringNullableFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   subtasks?: Prisma.SubtaskListRelationFilter
   resources?: Prisma.StudyResourceListRelationFilter
+  goalCheckpoint?: Prisma.XOR<Prisma.GoalCheckpointNullableScalarRelationFilter, Prisma.GoalCheckpointWhereInput> | null
 }
 
 export type TaskOrderByWithRelationInput = {
@@ -293,15 +302,18 @@ export type TaskOrderByWithRelationInput = {
   orderIndex?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   studyLayout?: Prisma.SortOrderInput | Prisma.SortOrder
+  goalCheckpointId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   subtasks?: Prisma.SubtaskOrderByRelationAggregateInput
   resources?: Prisma.StudyResourceOrderByRelationAggregateInput
+  goalCheckpoint?: Prisma.GoalCheckpointOrderByWithRelationInput
 }
 
 export type TaskWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  goalCheckpointId?: string
   AND?: Prisma.TaskWhereInput | Prisma.TaskWhereInput[]
   OR?: Prisma.TaskWhereInput[]
   NOT?: Prisma.TaskWhereInput | Prisma.TaskWhereInput[]
@@ -320,7 +332,8 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   subtasks?: Prisma.SubtaskListRelationFilter
   resources?: Prisma.StudyResourceListRelationFilter
-}, "id">
+  goalCheckpoint?: Prisma.XOR<Prisma.GoalCheckpointNullableScalarRelationFilter, Prisma.GoalCheckpointWhereInput> | null
+}, "id" | "goalCheckpointId">
 
 export type TaskOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -334,6 +347,7 @@ export type TaskOrderByWithAggregationInput = {
   orderIndex?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   studyLayout?: Prisma.SortOrderInput | Prisma.SortOrder
+  goalCheckpointId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TaskCountOrderByAggregateInput
@@ -358,6 +372,7 @@ export type TaskScalarWhereWithAggregatesInput = {
   orderIndex?: Prisma.IntWithAggregatesFilter<"Task"> | number
   notes?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   studyLayout?: Prisma.JsonNullableWithAggregatesFilter<"Task">
+  goalCheckpointId?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
 }
@@ -378,6 +393,7 @@ export type TaskCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutTasksInput
   subtasks?: Prisma.SubtaskCreateNestedManyWithoutTaskInput
   resources?: Prisma.StudyResourceCreateNestedManyWithoutTaskInput
+  goalCheckpoint?: Prisma.GoalCheckpointCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateInput = {
@@ -392,6 +408,7 @@ export type TaskUncheckedCreateInput = {
   orderIndex?: number
   notes?: string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   subtasks?: Prisma.SubtaskUncheckedCreateNestedManyWithoutTaskInput
@@ -414,6 +431,7 @@ export type TaskUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
   subtasks?: Prisma.SubtaskUpdateManyWithoutTaskNestedInput
   resources?: Prisma.StudyResourceUpdateManyWithoutTaskNestedInput
+  goalCheckpoint?: Prisma.GoalCheckpointUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateInput = {
@@ -428,6 +446,7 @@ export type TaskUncheckedUpdateInput = {
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subtasks?: Prisma.SubtaskUncheckedUpdateManyWithoutTaskNestedInput
@@ -446,6 +465,7 @@ export type TaskCreateManyInput = {
   orderIndex?: number
   notes?: string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -477,6 +497,7 @@ export type TaskUncheckedUpdateManyInput = {
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -503,6 +524,7 @@ export type TaskCountOrderByAggregateInput = {
   orderIndex?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   studyLayout?: Prisma.SortOrder
+  goalCheckpointId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -522,6 +544,7 @@ export type TaskMaxOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  goalCheckpointId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -537,6 +560,7 @@ export type TaskMinOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  goalCheckpointId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -548,6 +572,11 @@ export type TaskSumOrderByAggregateInput = {
 export type TaskScalarRelationFilter = {
   is?: Prisma.TaskWhereInput
   isNot?: Prisma.TaskWhereInput
+}
+
+export type TaskNullableScalarRelationFilter = {
+  is?: Prisma.TaskWhereInput | null
+  isNot?: Prisma.TaskWhereInput | null
 }
 
 export type TaskCreateNestedManyWithoutUserInput = {
@@ -628,6 +657,38 @@ export type TaskUpdateOneRequiredWithoutSubtasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutSubtasksInput, Prisma.TaskUpdateWithoutSubtasksInput>, Prisma.TaskUncheckedUpdateWithoutSubtasksInput>
 }
 
+export type TaskCreateNestedOneWithoutGoalCheckpointInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutGoalCheckpointInput, Prisma.TaskUncheckedCreateWithoutGoalCheckpointInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutGoalCheckpointInput
+  connect?: Prisma.TaskWhereUniqueInput
+}
+
+export type TaskUncheckedCreateNestedOneWithoutGoalCheckpointInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutGoalCheckpointInput, Prisma.TaskUncheckedCreateWithoutGoalCheckpointInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutGoalCheckpointInput
+  connect?: Prisma.TaskWhereUniqueInput
+}
+
+export type TaskUpdateOneWithoutGoalCheckpointNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutGoalCheckpointInput, Prisma.TaskUncheckedCreateWithoutGoalCheckpointInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutGoalCheckpointInput
+  upsert?: Prisma.TaskUpsertWithoutGoalCheckpointInput
+  disconnect?: Prisma.TaskWhereInput | boolean
+  delete?: Prisma.TaskWhereInput | boolean
+  connect?: Prisma.TaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutGoalCheckpointInput, Prisma.TaskUpdateWithoutGoalCheckpointInput>, Prisma.TaskUncheckedUpdateWithoutGoalCheckpointInput>
+}
+
+export type TaskUncheckedUpdateOneWithoutGoalCheckpointNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutGoalCheckpointInput, Prisma.TaskUncheckedCreateWithoutGoalCheckpointInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutGoalCheckpointInput
+  upsert?: Prisma.TaskUpsertWithoutGoalCheckpointInput
+  disconnect?: Prisma.TaskWhereInput | boolean
+  delete?: Prisma.TaskWhereInput | boolean
+  connect?: Prisma.TaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutGoalCheckpointInput, Prisma.TaskUpdateWithoutGoalCheckpointInput>, Prisma.TaskUncheckedUpdateWithoutGoalCheckpointInput>
+}
+
 export type TaskCreateWithoutUserInput = {
   id?: string
   title: string
@@ -643,6 +704,7 @@ export type TaskCreateWithoutUserInput = {
   updatedAt?: Date | string
   subtasks?: Prisma.SubtaskCreateNestedManyWithoutTaskInput
   resources?: Prisma.StudyResourceCreateNestedManyWithoutTaskInput
+  goalCheckpoint?: Prisma.GoalCheckpointCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutUserInput = {
@@ -656,6 +718,7 @@ export type TaskUncheckedCreateWithoutUserInput = {
   orderIndex?: number
   notes?: string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   subtasks?: Prisma.SubtaskUncheckedCreateNestedManyWithoutTaskInput
@@ -703,6 +766,7 @@ export type TaskScalarWhereInput = {
   orderIndex?: Prisma.IntFilter<"Task"> | number
   notes?: Prisma.StringNullableFilter<"Task"> | string | null
   studyLayout?: Prisma.JsonNullableFilter<"Task">
+  goalCheckpointId?: Prisma.StringNullableFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
 }
@@ -722,6 +786,7 @@ export type TaskCreateWithoutResourcesInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutTasksInput
   subtasks?: Prisma.SubtaskCreateNestedManyWithoutTaskInput
+  goalCheckpoint?: Prisma.GoalCheckpointCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutResourcesInput = {
@@ -736,6 +801,7 @@ export type TaskUncheckedCreateWithoutResourcesInput = {
   orderIndex?: number
   notes?: string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   subtasks?: Prisma.SubtaskUncheckedCreateNestedManyWithoutTaskInput
@@ -772,6 +838,7 @@ export type TaskUpdateWithoutResourcesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
   subtasks?: Prisma.SubtaskUpdateManyWithoutTaskNestedInput
+  goalCheckpoint?: Prisma.GoalCheckpointUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutResourcesInput = {
@@ -786,6 +853,7 @@ export type TaskUncheckedUpdateWithoutResourcesInput = {
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subtasks?: Prisma.SubtaskUncheckedUpdateManyWithoutTaskNestedInput
@@ -806,6 +874,7 @@ export type TaskCreateWithoutSubtasksInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutTasksInput
   resources?: Prisma.StudyResourceCreateNestedManyWithoutTaskInput
+  goalCheckpoint?: Prisma.GoalCheckpointCreateNestedOneWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutSubtasksInput = {
@@ -820,6 +889,7 @@ export type TaskUncheckedCreateWithoutSubtasksInput = {
   orderIndex?: number
   notes?: string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   resources?: Prisma.StudyResourceUncheckedCreateNestedManyWithoutTaskInput
@@ -856,6 +926,7 @@ export type TaskUpdateWithoutSubtasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
   resources?: Prisma.StudyResourceUpdateManyWithoutTaskNestedInput
+  goalCheckpoint?: Prisma.GoalCheckpointUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutSubtasksInput = {
@@ -870,8 +941,97 @@ export type TaskUncheckedUpdateWithoutSubtasksInput = {
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resources?: Prisma.StudyResourceUncheckedUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskCreateWithoutGoalCheckpointInput = {
+  id?: string
+  title: string
+  description?: string | null
+  priority?: $Enums.Priority
+  deadline?: Date | string | null
+  completed?: boolean
+  completedAt?: Date | string | null
+  orderIndex?: number
+  notes?: string | null
+  studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutTasksInput
+  subtasks?: Prisma.SubtaskCreateNestedManyWithoutTaskInput
+  resources?: Prisma.StudyResourceCreateNestedManyWithoutTaskInput
+}
+
+export type TaskUncheckedCreateWithoutGoalCheckpointInput = {
+  id?: string
+  userId: string
+  title: string
+  description?: string | null
+  priority?: $Enums.Priority
+  deadline?: Date | string | null
+  completed?: boolean
+  completedAt?: Date | string | null
+  orderIndex?: number
+  notes?: string | null
+  studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  subtasks?: Prisma.SubtaskUncheckedCreateNestedManyWithoutTaskInput
+  resources?: Prisma.StudyResourceUncheckedCreateNestedManyWithoutTaskInput
+}
+
+export type TaskCreateOrConnectWithoutGoalCheckpointInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutGoalCheckpointInput, Prisma.TaskUncheckedCreateWithoutGoalCheckpointInput>
+}
+
+export type TaskUpsertWithoutGoalCheckpointInput = {
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutGoalCheckpointInput, Prisma.TaskUncheckedUpdateWithoutGoalCheckpointInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutGoalCheckpointInput, Prisma.TaskUncheckedCreateWithoutGoalCheckpointInput>
+  where?: Prisma.TaskWhereInput
+}
+
+export type TaskUpdateToOneWithWhereWithoutGoalCheckpointInput = {
+  where?: Prisma.TaskWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutGoalCheckpointInput, Prisma.TaskUncheckedUpdateWithoutGoalCheckpointInput>
+}
+
+export type TaskUpdateWithoutGoalCheckpointInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  subtasks?: Prisma.SubtaskUpdateManyWithoutTaskNestedInput
+  resources?: Prisma.StudyResourceUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutGoalCheckpointInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subtasks?: Prisma.SubtaskUncheckedUpdateManyWithoutTaskNestedInput
   resources?: Prisma.StudyResourceUncheckedUpdateManyWithoutTaskNestedInput
 }
 
@@ -886,6 +1046,7 @@ export type TaskCreateManyUserInput = {
   orderIndex?: number
   notes?: string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -905,6 +1066,7 @@ export type TaskUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subtasks?: Prisma.SubtaskUpdateManyWithoutTaskNestedInput
   resources?: Prisma.StudyResourceUpdateManyWithoutTaskNestedInput
+  goalCheckpoint?: Prisma.GoalCheckpointUpdateOneWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutUserInput = {
@@ -918,6 +1080,7 @@ export type TaskUncheckedUpdateWithoutUserInput = {
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subtasks?: Prisma.SubtaskUncheckedUpdateManyWithoutTaskNestedInput
@@ -935,6 +1098,7 @@ export type TaskUncheckedUpdateManyWithoutUserInput = {
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studyLayout?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  goalCheckpointId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -991,11 +1155,13 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   orderIndex?: boolean
   notes?: boolean
   studyLayout?: boolean
+  goalCheckpointId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   subtasks?: boolean | Prisma.Task$subtasksArgs<ExtArgs>
   resources?: boolean | Prisma.Task$resourcesArgs<ExtArgs>
+  goalCheckpoint?: boolean | Prisma.Task$goalCheckpointArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
@@ -1011,9 +1177,11 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   orderIndex?: boolean
   notes?: boolean
   studyLayout?: boolean
+  goalCheckpointId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  goalCheckpoint?: boolean | Prisma.Task$goalCheckpointArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1028,9 +1196,11 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   orderIndex?: boolean
   notes?: boolean
   studyLayout?: boolean
+  goalCheckpointId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  goalCheckpoint?: boolean | Prisma.Task$goalCheckpointArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectScalar = {
@@ -1045,22 +1215,26 @@ export type TaskSelectScalar = {
   orderIndex?: boolean
   notes?: boolean
   studyLayout?: boolean
+  goalCheckpointId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "priority" | "deadline" | "completed" | "completedAt" | "orderIndex" | "notes" | "studyLayout" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "priority" | "deadline" | "completed" | "completedAt" | "orderIndex" | "notes" | "studyLayout" | "goalCheckpointId" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
 export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   subtasks?: boolean | Prisma.Task$subtasksArgs<ExtArgs>
   resources?: boolean | Prisma.Task$resourcesArgs<ExtArgs>
+  goalCheckpoint?: boolean | Prisma.Task$goalCheckpointArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  goalCheckpoint?: boolean | Prisma.Task$goalCheckpointArgs<ExtArgs>
 }
 export type TaskIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  goalCheckpoint?: boolean | Prisma.Task$goalCheckpointArgs<ExtArgs>
 }
 
 export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1069,6 +1243,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     user: Prisma.$UserPayload<ExtArgs>
     subtasks: Prisma.$SubtaskPayload<ExtArgs>[]
     resources: Prisma.$StudyResourcePayload<ExtArgs>[]
+    goalCheckpoint: Prisma.$GoalCheckpointPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1082,6 +1257,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     orderIndex: number
     notes: string | null
     studyLayout: runtime.JsonValue | null
+    goalCheckpointId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["task"]>
@@ -1481,6 +1657,7 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   subtasks<T extends Prisma.Task$subtasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$subtasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubtaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   resources<T extends Prisma.Task$resourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudyResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  goalCheckpoint<T extends Prisma.Task$goalCheckpointArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$goalCheckpointArgs<ExtArgs>>): Prisma.Prisma__GoalCheckpointClient<runtime.Types.Result.GetResult<Prisma.$GoalCheckpointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1521,6 +1698,7 @@ export interface TaskFieldRefs {
   readonly orderIndex: Prisma.FieldRef<"Task", 'Int'>
   readonly notes: Prisma.FieldRef<"Task", 'String'>
   readonly studyLayout: Prisma.FieldRef<"Task", 'Json'>
+  readonly goalCheckpointId: Prisma.FieldRef<"Task", 'String'>
   readonly createdAt: Prisma.FieldRef<"Task", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Task", 'DateTime'>
 }
@@ -1969,6 +2147,25 @@ export type Task$resourcesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.StudyResourceScalarFieldEnum | Prisma.StudyResourceScalarFieldEnum[]
+}
+
+/**
+ * Task.goalCheckpoint
+ */
+export type Task$goalCheckpointArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GoalCheckpoint
+   */
+  select?: Prisma.GoalCheckpointSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GoalCheckpoint
+   */
+  omit?: Prisma.GoalCheckpointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GoalCheckpointInclude<ExtArgs> | null
+  where?: Prisma.GoalCheckpointWhereInput
 }
 
 /**
