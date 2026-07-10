@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Checkbox from "@/components/plan/Checkbox";
 import { cardTint } from "@/lib/goalCardTint";
+import { bloomStage } from "@/lib/goalBloom";
+import BloomBadge from "./BloomBadge";
 import type { GoalNodeData } from "./types";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -278,6 +280,7 @@ export default function GoalCardDetail({
               }}
               className="flex min-h-[20rem] flex-col items-center justify-center gap-5 rounded-lg border p-10 text-center"
             >
+              <BloomBadge stage={bloomStage(done, total)} size={20} />
               <p
                 className="text-eyebrow"
                 style={{ color: isRoot ? "var(--color-ember)" : tint.accent }}

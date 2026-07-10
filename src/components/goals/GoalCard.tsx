@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Handle, Position } from "@xyflow/react";
 import { CARD_WIDTH, CARD_HEIGHT } from "@/lib/goalLayout";
 import { cardTint } from "@/lib/goalCardTint";
+import { bloomColor, bloomStage } from "@/lib/goalBloom";
+import BloomBadge from "./BloomBadge";
 import type { GoalNodeData } from "./types";
 
 function dayLabel(date: string) {
@@ -27,6 +29,7 @@ export default function GoalCard({
   const done = node.checkpoints.filter((c) => c.completed).length;
   const pct = total > 0 ? (done / total) * 100 : node.completed ? 100 : 0;
   const tint = cardTint(node.id);
+  const stage = bloomStage(done, total);
 
   return (
     <>
@@ -43,9 +46,12 @@ export default function GoalCard({
         className="flex flex-col justify-between rounded-lg border p-4 text-left shadow-[0_1px_0_rgba(0,0,0,0.08)] transition-transform duration-300 hover:-translate-y-0.5"
       >
         <div>
-          <p className="font-voice line-clamp-2 text-lg italic leading-snug text-bone">
-            {node.title}
-          </p>
+          <div className="flex items-start justify-between gap-2">
+            <p className="font-voice line-clamp-2 text-lg italic leading-snug text-bone">
+              {node.title}
+            </p>
+            <BloomBadge stage={stage} />
+          </div>
           {node.targetDate && (
             <p
               className="mt-1.5 text-[9px] tracking-[0.16em]"
@@ -60,8 +66,8 @@ export default function GoalCard({
             <>
               <div className="h-[3px] w-full rounded-full bg-black/15">
                 <div
-                  className="h-[3px] rounded-full bg-ember transition-all duration-500"
-                  style={{ width: `${pct}%` }}
+                  className="h-[3px] rounded-full transition-all duration-500"
+                  style={{ width: `${pct}%`, background: bloomColor(stage) }}
                 />
               </div>
               <p className="mt-1 text-[9px] tracking-[0.1em] text-bone-muted">

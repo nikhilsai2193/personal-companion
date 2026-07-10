@@ -2,6 +2,7 @@ export type GoalCheckpointData = {
   id: string;
   title: string;
   completed: boolean;
+  completedAt: string | null;
 };
 
 export type GoalNodeData = {
@@ -14,6 +15,7 @@ export type GoalNodeData = {
   obstacle: string | null;
   obstaclePlan: string | null;
   completed: boolean;
+  completedAt: string | null;
   checkpoints: GoalCheckpointData[];
 };
 

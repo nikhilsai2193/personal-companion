@@ -228,6 +228,56 @@ Key decisions encoded here:
   and confirmed the completed item survived with its checkbox state intact
   and a genuinely new checkpoint from that entry was correctly added
   alongside it. Test plan deleted after verification.
+- **M13 — Goal Trees: designed to be motivating, not the AI pipeline.**
+  ✅ *(done 2026-07-07)* Direct response to the user's own read after using
+  M12: it "does not feel attractive enough" and didn't make them "feel
+  motivated." Five sub-milestones, all research-grounded (goal-gradient
+  effect, endowed progress, Duolingo-style loss-aversion streaks, the
+  fresh-start effect, Forest/Habitica growth metaphors, Fogg's Tiny
+  Habits "Shine") — citations in the plan doc. **M13.1**: `GoalNodeData`/
+  `GoalCheckpointData` widened with `completedAt` (the API already
+  returned it; the client types just didn't expose it), new
+  `src/lib/goalProgress.ts` (`planCompletion`, `activityByDay`,
+  `currentStreak`) powering a new `GoalProgressHeader` — an overall %
+  ring, a streak flame, and a 14-day activity heatmap, all derived from
+  data already on hand, no new endpoints. **M13.2**: `src/lib/
+  goalNextMove.ts` (`selectNextMove`) surfaces the single nearest
+  actionable checkpoint — same earliest-deadline precedence
+  `layoutGoalTree` already uses for the canvas, undated nodes falling
+  back to shallowest-first rather than last — as a `NextMoveSpotlight`
+  above the tree, so a returning visit answers "what do I do today"
+  before the user has to parse anything. **M13.3**: `src/lib/
+  goalBloom.ts` (`bloomStage`: bare → budding → blooming → golden) plus a
+  shared `BloomBadge` glyph used identically in both `GoalCard` and
+  `GoalCardDetail`'s front face (same `layoutId` flip, so the badge can't
+  visibly pop between the two); edges now thicken as well as tint with
+  subtree progress, reading as a vine filling in rather than a flat
+  color change — all through the single existing ember accent, no new
+  hues introduced. **M13.4**: `CelebrationBurst` (a small ember particle
+  burst + a varied, never-repeated one-line affirmation — Fogg is
+  explicit that fixed/repetitive celebration stops registering) fires on
+  every checkpoint completion, with a bigger tier when a whole node
+  completes; `persistFirstTree` now seeds every new plan's root with one
+  already-completed "committed to this" checkpoint, so the very first
+  render shows real, non-zero progress (endowed progress effect).
+  **M13.5**: a `localStorage`-only fresh-start banner
+  (`src/lib/goalFreshStart.ts`) reframes re-entry after a week/month
+  boundary as a new chapter rather than a cold drop back into a static
+  tree. Verified live end to end on the user's real plan (with careful
+  cleanup after each test — every checkpoint toggled for verification was
+  reverted to its original state afterward) plus a disposable throwaway
+  plan specifically for the endowed-progress and fresh-start checks: the
+  progress ring/streak/heatmap matched hand-computed values, the
+  spotlight correctly advanced (with an initial false alarm that turned
+  out to be the animation's own transition time, not a bug — confirmed
+  by waiting past `mode="wait"`'s exit+enter duration), all four bloom
+  stages rendered correctly, the celebration burst's state transition was
+  traced end-to-end through React state (a real fix landed along the way:
+  the celebration setState was originally called from inside the
+  `setNodes` updater function, an impurity StrictMode's double-invocation
+  made easy to catch), a fresh plan's root started at a non-zero
+  percentage, and the fresh-start banner appeared and correctly stayed
+  dismissed after a normal same-day reload.
 
 Each milestone is independently testable. Local dev never requires Supabase.
 

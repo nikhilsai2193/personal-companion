@@ -89,7 +89,10 @@ export default function GoalCanvas({
           animated: false,
           style: {
             stroke: color,
-            strokeWidth: 2,
+            // A bare branch reads thin; a finished one thickens like a
+            // grown vine — the same growth cue as the card, carried into
+            // the connectors between them.
+            strokeWidth: 1.5 + e.progress * 2.5,
             strokeDasharray: e.isChoice ? "6 4" : undefined,
           },
         };
@@ -106,7 +109,7 @@ export default function GoalCanvas({
         edges={flowEdges}
         nodeTypes={NODE_TYPES}
         fitView
-        fitViewOptions={{ padding: 0.3 }}
+        fitViewOptions={{ padding: { top: 260, right: "15%", bottom: "15%", left: "15%" } }}
         proOptions={{ hideAttribution: true }}
         minZoom={0.3}
         maxZoom={1.5}

@@ -63,6 +63,12 @@ export default function Recorder({
   const [lastSavedTo, setLastSavedTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [screenSupported, setScreenSupported] = useState(false);
+  const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
+  // null = system default ("auto"). Loaded synchronously so it's already
+  // correct on the very first getUserMedia call, not one render late.
+  const [audioDeviceId, setAudioDeviceId] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : localStorage.getItem("dayfilm-audio-device")
+  );
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -70,27 +76,100 @@ export default function Recorder({
   const chunksRef = useRef<Blob[]>([]);
   const startedAtRef = useRef(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // getUserMedia is async and outlives a fast tab switch — without this,
+  // a stream that resolves after the component has already unmounted gets
+  // assigned to streamRef with nothing left around to ever stop it,
+  // leaving the camera on indefinitely.
+  const mountedRef = useRef(true);
+  // React Strict Mode (on by default with the App Router since Next
+  // 13.5.1, and not overridden here) runs every effect's setup → cleanup
+  // → setup once in dev — so this effect fires startCameraPreview twice
+  // on mount, kicking off two real getUserMedia requests. Whichever one
+  // resolves first was, until this guard existed, unconditionally
+  // overwritten by the second — orphaning its stream with nothing left
+  // to ever call .stop() on. requestIdRef lets a resolving call recognize
+  // it's been superseded and stop itself instead.
+  const requestIdRef = useRef(0);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   const stopTracks = useCallback(() => {
+    requestIdRef.current++;
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     if (videoRef.current) videoRef.current.srcObject = null;
   }, []);
 
+  // Device labels are only populated by the browser once permission has
+  // been granted at least once — called after every successful stream
+  // grant, and again on devicechange so a newly plugged-in mic shows up
+  // in the picker without needing a reload.
+  const refreshAudioDevices = useCallback(async () => {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      setAudioDevices(devices.filter((d) => d.kind === "audioinput"));
+    } catch {
+      // Device list just won't refresh — not worth surfacing as an error.
+    }
+  }, []);
+
+  const selectAudioDevice = useCallback((id: string | null) => {
+    setAudioDeviceId(id);
+    if (id) localStorage.setItem("dayfilm-audio-device", id);
+    else localStorage.removeItem("dayfilm-audio-device");
+  }, []);
+
   const startCameraPreview = useCallback(async () => {
     stopTracks();
+    const requestId = ++requestIdRef.current;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: true,
+        audio: audioDeviceId ? { deviceId: { exact: audioDeviceId } } : true,
       });
+      if (!mountedRef.current || requestIdRef.current !== requestId) {
+        stream.getTracks().forEach((t) => t.stop());
+        return;
+      }
       streamRef.current = stream;
       if (videoRef.current) videoRef.current.srcObject = stream;
       setError(null);
-    } catch {
+      refreshAudioDevices();
+    } catch (err) {
+      if (!mountedRef.current || requestIdRef.current !== requestId) return;
+      // The device the user had picked was unplugged — fall back to the
+      // system default instead of getting stuck pointed at nothing.
+      if (audioDeviceId && err instanceof DOMException && err.name === "OverconstrainedError") {
+        selectAudioDevice(null);
+        return;
+      }
       setError("Camera or microphone access was denied.");
     }
-  }, [stopTracks]);
+  }, [stopTracks, audioDeviceId, refreshAudioDevices, selectAudioDevice]);
+
+  useEffect(() => {
+    refreshAudioDevices();
+    const handleDeviceChange = () => {
+      refreshAudioDevices();
+      // A live stream stays bound to whatever device was default when it
+      // was created — the browser won't hot-swap it just because the OS
+      // default changed. Re-requesting picks up the new default (e.g. a
+      // just-connected pair of earphones) instead of silently sticking
+      // with the built-in mic. Only in "auto" mode — an explicit pick
+      // should stay put through unrelated device changes.
+      if (!audioDeviceId && source === "CAMERA" && streamRef.current) {
+        startCameraPreview();
+      }
+    };
+    navigator.mediaDevices.addEventListener("devicechange", handleDeviceChange);
+    return () =>
+      navigator.mediaDevices.removeEventListener("devicechange", handleDeviceChange);
+  }, [audioDeviceId, source, startCameraPreview, refreshAudioDevices]);
 
   useEffect(() => {
     setScreenSupported(
@@ -306,9 +385,16 @@ export default function Recorder({
       });
       let mic: MediaStream | null = null;
       try {
-        mic = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mic = await navigator.mediaDevices.getUserMedia({
+          audio: audioDeviceId ? { deviceId: { exact: audioDeviceId } } : true,
+        });
       } catch {
         setError("Recording screen without mic — audio access was denied.");
+      }
+      if (!mountedRef.current) {
+        display.getTracks().forEach((t) => t.stop());
+        mic?.getTracks().forEach((t) => t.stop());
+        return;
       }
       const combined = new MediaStream([
         ...display.getVideoTracks(),
@@ -318,7 +404,7 @@ export default function Recorder({
     } catch {
       // User dismissed the screen picker — not an error.
     }
-  }, [source, beginRecording, startCameraPreview]);
+  }, [source, beginRecording, startCameraPreview, audioDeviceId]);
 
   const stopRecording = useCallback(() => {
     if (recorderRef.current?.state === "recording") recorderRef.current.stop();
@@ -363,6 +449,28 @@ export default function Recorder({
           </div>
         )}
       </div>
+
+      {audioDevices.length > 1 && (
+        <div className="mx-auto mt-3 flex w-full max-w-3xl items-center justify-end gap-2 text-[10px] tracking-[0.1em]">
+          <label htmlFor="mic-select" className="text-bone-faint">
+            mic
+          </label>
+          <select
+            id="mic-select"
+            value={audioDeviceId ?? ""}
+            disabled={recording || phase !== "idle"}
+            onChange={(e) => selectAudioDevice(e.target.value || null)}
+            className="rounded border border-ink-3 bg-ink-2 px-2 py-1 text-bone-muted outline-none disabled:opacity-40"
+          >
+            <option value="">auto (system default)</option>
+            {audioDevices.map((d, i) => (
+              <option key={d.deviceId} value={d.deviceId}>
+                {d.label || `microphone ${i + 1}`}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="mx-auto mt-4 w-full max-w-3xl">
         <div className="relative aspect-video overflow-hidden rounded-lg bg-ink-2">

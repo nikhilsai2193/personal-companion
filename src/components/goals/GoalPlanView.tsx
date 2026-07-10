@@ -1,15 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import GoalComposer from "./GoalComposer";
 import ProcessingOverlay from "./ProcessingOverlay";
 import GoalCanvas from "./GoalCanvas";
+import GoalProgressHeader from "./GoalProgressHeader";
+import NextMoveSpotlight from "./NextMoveSpotlight";
+import CelebrationBurst, { type Celebration } from "./CelebrationBurst";
 import MergeReview from "./MergeReview";
 import type { NodeEdit } from "./GoalCardDetail";
 import type { GoalEntryData, GoalNodeData, GoalPlanData } from "./types";
 import type { MergeDiff } from "@/lib/goalDiff";
+import { isFreshStart } from "@/lib/goalFreshStart";
 
 export default function GoalPlanView({ planId }: { planId: string }) {
   const [plan, setPlan] = useState<GoalPlanData | null>(null);
@@ -20,6 +24,9 @@ export default function GoalPlanView({ planId }: { planId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [addingMore, setAddingMore] = useState(false);
   const [pendingDiff, setPendingDiff] = useState<{ entryId: string; diff: MergeDiff } | null>(null);
+  const [celebration, setCelebration] = useState<Celebration | null>(null);
+  const [freshStart, setFreshStart] = useState(false);
+  const freshStartChecked = useRef(false);
 
   const refresh = useCallback(() => {
     fetch(`/api/goals/${planId}`)
@@ -33,6 +40,15 @@ export default function GoalPlanView({ planId }: { planId: string }) {
   }, [planId]);
 
   useEffect(refresh, [refresh]);
+
+  useEffect(() => {
+    if (freshStartChecked.current || !nodes || nodes.length === 0) return;
+    freshStartChecked.current = true;
+    const key = `goal-last-visit-${planId}`;
+    const lastVisit = localStorage.getItem(key);
+    if (isFreshStart(lastVisit)) setFreshStart(true);
+    localStorage.setItem(key, new Date().toISOString());
+  }, [nodes, planId]);
 
   const submitEntry = useCallback(
     async (text: string) => {
@@ -86,11 +102,14 @@ export default function GoalPlanView({ planId }: { planId: string }) {
       });
       if (!res.ok) return;
       const { node } = await res.json();
-      setNodes((prev) =>
-        prev ? prev.map((n) => (n.id === node.id ? node : n)) : prev
-      );
+      if (completed) {
+        const prevNode = nodes?.find((n) => n.id === node.id);
+        const justCompletedNode = !!prevNode && !prevNode.completed && node.completed;
+        setCelebration({ tier: justCompletedNode ? "node" : "checkpoint", key: Date.now() });
+      }
+      setNodes((prev) => (prev ? prev.map((n) => (n.id === node.id ? node : n)) : prev));
     },
-    []
+    [nodes]
   );
 
   const addCheckpoint = useCallback(async (nodeId: string, title: string) => {
@@ -160,6 +179,25 @@ export default function GoalPlanView({ planId }: { planId: string }) {
         </div>
       </div>
 
+      {hasTree && !addingMore && (
+        <div className="pointer-events-auto absolute inset-x-0 top-14 z-10 flex flex-col gap-4 px-6 md:px-10">
+          {freshStart && (
+            <motion.button
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              onClick={() => setFreshStart(false)}
+              className="self-start text-[10px] tracking-[0.12em] text-ember hover:opacity-80"
+            >
+              new chapter — pick up where you left off
+            </motion.button>
+          )}
+          <GoalProgressHeader nodes={nodes} entries={entries} />
+          <div className="max-w-md">
+            <NextMoveSpotlight nodes={nodes} onToggleCheckpoint={toggleCheckpoint} />
+          </div>
+        </div>
+      )}
+
       {hasTree && !addingMore ? (
         <GoalCanvas
           nodes={nodes}
@@ -203,6 +241,8 @@ export default function GoalPlanView({ planId }: { planId: string }) {
           />
         )}
       </AnimatePresence>
+
+      <CelebrationBurst celebration={celebration} onDone={() => setCelebration(null)} />
     </div>
   );
 }

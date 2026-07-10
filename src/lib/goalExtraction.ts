@@ -198,11 +198,31 @@ export async function persistFirstTree(goalPlanId: string, nodes: RawNode[]) {
             obstacle: n.obstacle,
             obstaclePlan: n.obstaclePlan,
             checkpoints: {
-              create: n.checkpoints.map((c, i) => ({
-                id: randomUUID(),
-                title: c.title,
-                orderIndex: i,
-              })),
+              // Endowed progress: the root starts with one step already
+              // taken, so the very first render shows real (if small)
+              // progress instead of a blank 0% — people given a head
+              // start finish at a higher rate than people starting from
+              // zero, even at equal remaining distance (Nunes & Drèze).
+              // Root-only, not per-node, so it doesn't dilute every
+              // subtree's own percentage.
+              create: [
+                ...(n.parentId === null
+                  ? [
+                      {
+                        id: randomUUID(),
+                        title: "committed to this",
+                        completed: true,
+                        completedAt: new Date(),
+                        orderIndex: -1,
+                      },
+                    ]
+                  : []),
+                ...n.checkpoints.map((c, i) => ({
+                  id: randomUUID(),
+                  title: c.title,
+                  orderIndex: i,
+                })),
+              ],
             },
           },
         })
