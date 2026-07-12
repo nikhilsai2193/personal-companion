@@ -27,10 +27,10 @@ export const supabaseAdapter: StorageAdapter = {
     if (error) throw error;
   },
 
-  async getSignedUrl(p) {
+  async getSignedUrl(p, opts) {
     const { data, error } = await supabase()
       .storage.from(BUCKET)
-      .createSignedUrl(p, 3600);
+      .createSignedUrl(p, 3600, opts?.download ? { download: opts.download } : undefined);
     if (error) throw error;
     return data.signedUrl;
   },

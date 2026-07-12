@@ -299,6 +299,12 @@ export default function Archive() {
                     </>
                   ) : (
                     <>
+                      <a
+                        href={`/api/films/${active.id}/download`}
+                        className="text-bone-faint transition-colors hover:text-bone"
+                      >
+                        download
+                      </a>
                       <button
                         onClick={() => setConfirming(true)}
                         className="text-bone-faint transition-colors hover:text-ember"

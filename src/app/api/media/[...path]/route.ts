@@ -36,6 +36,11 @@ export async function GET(
     MIME[path.extname(filePath).toLowerCase()] ?? "application/octet-stream";
   const range = req.headers.get("range");
 
+  const downloadName = req.nextUrl.searchParams.get("download");
+  const disposition: Record<string, string> = downloadName
+    ? { "Content-Disposition": `attachment; filename="${sanitizeFilename(downloadName)}"` }
+    : {};
+
   if (range) {
     const match = range.match(/bytes=(\d*)-(\d*)/);
     const start = match?.[1] ? parseInt(match[1], 10) : 0;
@@ -56,6 +61,7 @@ export async function GET(
         "Content-Range": `bytes ${start}-${end}/${stat.size}`,
         "Content-Length": String(end - start + 1),
         "Accept-Ranges": "bytes",
+        ...disposition,
       },
     });
   }
@@ -66,6 +72,14 @@ export async function GET(
       "Content-Type": contentType,
       "Content-Length": String(stat.size),
       "Accept-Ranges": "bytes",
+      ...disposition,
     },
   });
+}
+
+// Strips characters that could break out of the quoted Content-Disposition
+// filename (or inject header fields via CRLF) — belt-and-suspenders since
+// the value only ever comes from our own generated download links today.
+function sanitizeFilename(name: string) {
+  return name.replace(/[\r\n"]/g, "").slice(0, 200);
 }

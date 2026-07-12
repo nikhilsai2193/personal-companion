@@ -92,12 +92,20 @@ export default function FilmView({
             </button>
           </span>
         ) : (
-          <button
-            onClick={() => setConfirming(true)}
-            className="text-xs tracking-[0.12em] text-bone-faint transition-colors hover:text-ember"
-          >
-            delete film
-          </button>
+          <span className="flex items-center gap-4 text-xs tracking-[0.12em]">
+            <a
+              href={`/api/films/${film.id}/download`}
+              className="text-bone-faint transition-colors hover:text-bone"
+            >
+              download
+            </a>
+            <button
+              onClick={() => setConfirming(true)}
+              className="text-bone-faint transition-colors hover:text-ember"
+            >
+              delete film
+            </button>
+          </span>
         )}
       </div>
     </div>

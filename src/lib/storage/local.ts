@@ -21,9 +21,12 @@ export const localAdapter: StorageAdapter = {
     await fs.writeFile(full, data);
   },
 
-  async getSignedUrl(p) {
+  async getSignedUrl(p, opts) {
     safeJoin(p);
-    return `/api/media/${p}`;
+    const url = `/api/media/${p}`;
+    return opts?.download
+      ? `${url}?download=${encodeURIComponent(opts.download)}`
+      : url;
   },
 
   async delete(p) {
